@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Hand Gesture Controlled Car Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        #gameContainer {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #webcam {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 150px;
+            background: #000;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            z-index: 10;
+        }
+
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .stat {
+            color: #00ff00;
+            margin: 5px 0;
+        }
+
+        .label {
+            color: #aaa;
+            display: inline-block;
+            width: 120px;
+        }
+
+        #instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            max-width: 300px;
+            z-index: 100;
+        }
+
+        .instruction-title {
+            color: #00ff00;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .gesture {
+            margin: 5px 0;
+            color: #aaa;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px 50px;
+            border-radius: 10px;
+            z-index: 200;
+            text-align: center;
+        }
+
+        .spinner {
+            border: 4px solid #333;
+            border-top: 4px solid #00ff00;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <p>Loading Hand Gesture Recognition...</p>
+        <div class="spinner"></div>
+    </div>
+
+    <div id="gameContainer">
+        <canvas id="canvas"></canvas>
+        <video id="webcam" playsinline autoplay></video>
+
+        <div id="ui">
+            <div class="stat"><span class="label">Speed:</span> <span id="speed">0</span> km/h</div>
+            <div class="stat"><span class="label">Rotation:</span> <span id="rotation">0</span>°</div>
+            <div class="stat"><span class="label">Gesture:</span> <span id="gesture">None</span></div>
+            <div class="stat"><span class="label">FPS:</span> <span id="fps">0</span></div>
+        </div>
+
+        <div id="instructions">
+            <div class="instruction-title">🎮 Hand Gestures Control</div>
+            <div class="gesture">✋ Open Palm: Forward</div>
+            <div class="gesture">👉 Point Right: Turn Right</div>
+            <div class="gesture">👈 Point Left: Turn Left</div>
+            <div class="gesture">✊ Fist: Brake/Stop</div>
+            <div class="gesture">👍 Thumbs Up: Boost</div>
+        </div>
+    </div>
+
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    
+    <!-- MediaPipe Hands -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
+
+    <!-- Game Scripts -->
+    <script src="js/handDetection.js"></script>
+    <script src="js/gameEngine.js"></script>
+    <script src="js/carController.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
